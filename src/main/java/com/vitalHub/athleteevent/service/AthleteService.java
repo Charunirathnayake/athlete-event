@@ -20,5 +20,7 @@ public interface AthleteService {
 	public void addResourceHandlers(ResourceHandlerRegistry registry);
 	
 	public Boolean addProfilePicOfAthlete(Long id,MultipartFile imgFile) throws IOException;
+	
+	public List<Athlete> searchAthlete(String searchq,String name,String event,String country,String gender);
 
 }

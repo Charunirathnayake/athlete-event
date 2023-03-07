@@ -37,7 +37,7 @@ public class Athlete {
 	@Column(name="country")
 	private String country;
 	
-	@Column(name="image")
+	@Column(name="image",length=65534)
 	private String image;
 	
 	@Column(name="date_of_birth")
@@ -57,6 +57,9 @@ public class Athlete {
 	
 	@Column(name="modified_date")
 	private Timestamp modifiedDate;
+
+	@Transient
+	private int age;
 	
 	@Transient
 	private List<EventParticipation> eventParticipationDetails;
@@ -74,6 +77,14 @@ public class Athlete {
 
 	public void setEventParticipationDetails(List<EventParticipation> eventParticipationDetails) {
 		this.eventParticipationDetails = eventParticipationDetails;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
 	}
 
 	public Long getId() {

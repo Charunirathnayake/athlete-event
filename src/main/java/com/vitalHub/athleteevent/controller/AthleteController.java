@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,11 +49,13 @@ public class AthleteController {
 		}	
 	}
 	
-	@PostMapping(value = "/creation/{athleteid}")
-	public ResponseEntity<Object> addAthleteProfilePicture(@PathVariable(value = "athleteid", required = true)Long athleteid,
+	@PutMapping(value = "/creation/{athleteid}")
+	public ResponseEntity<Object> addAthleteProfilePicture(@PathVariable(value = "athleteid", required = true)int athleteid,
 			@RequestParam("image") MultipartFile imgFile) throws IOException {
 		SuccessAndErrorDetailsResource successAndErrorDetailsResource = new SuccessAndErrorDetailsResource();
-		Boolean value=athleteService.addProfilePicOfAthlete(athleteid, imgFile);
+		
+		Long id=Long.valueOf(athleteid);
+		Boolean value=athleteService.addProfilePicOfAthlete(id, imgFile);
 		if(value!=false) {
 		successAndErrorDetailsResource.setMessages("Successfully Created.");
 		return new ResponseEntity<>(successAndErrorDetailsResource, HttpStatus.CREATED);}
@@ -74,5 +77,25 @@ public class AthleteController {
 			return new ResponseEntity<>(responseMessage, HttpStatus.NO_CONTENT);
 		}
 	}
+	
+	@GetMapping(value = "/search")
+    public ResponseEntity<Object> searchAthlete(@RequestParam(value = "searchq", required = false) String searchq,
+			@RequestParam(value = "name", required = false) String name,
+			@RequestParam(value = "country", required = false) String country,
+			@RequestParam(value = "event", required = false) String event,
+			@RequestParam(value = "gender", required = false) String gender
+			){
+    	SuccessAndErrorDetailsResource responseMessage = new SuccessAndErrorDetailsResource();
+    	List<Athlete>athleteList=athleteService.searchAthlete(searchq, name, event, country, gender);
+		
+    	if (athleteList!=null && !athleteList.isEmpty()) {
+			return new ResponseEntity<>(athleteList,HttpStatus.OK);
+		} else {
+			responseMessage.setMessages("Records not found.");
+			return new ResponseEntity<>(responseMessage, HttpStatus.NO_CONTENT);
+		}
+	}
+	
+	
 	
 }

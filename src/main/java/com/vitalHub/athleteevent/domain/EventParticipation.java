@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "event_participation")
 public class EventParticipation {
@@ -33,6 +35,7 @@ public class EventParticipation {
 	@Column(name="participation")
 	private String participation;
 	
+	@JsonIgnore
 	@ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "athlete_id", referencedColumnName = "id")
 	private Athlete athleteId;
@@ -48,6 +51,9 @@ public class EventParticipation {
 	
 	@Column(name="modified_date")
 	private Timestamp modifiedDate;
+	
+	@Column(name="result")
+	private String result;
 
 	
 	public String getParticipation() {

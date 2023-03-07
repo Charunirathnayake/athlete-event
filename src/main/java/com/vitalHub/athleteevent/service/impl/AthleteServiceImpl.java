@@ -1,6 +1,7 @@
 package com.vitalHub.athleteevent.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,14 +54,12 @@ public class AthleteServiceImpl implements AthleteService  {
 		
 		List<EventParticipation> participationList=null;
 		
-		
-		
 		Athlete athlete=new Athlete();
 		athlete.setFirstName(addAthleteRequestResource.getFirstName());
 		athlete.setLastName(addAthleteRequestResource.getLastName());
 		athlete.setGender(addAthleteRequestResource.getGender());
 		athlete.setCountry(addAthleteRequestResource.getCountry());
-		//athlete.setImage(fileName);
+		athlete.setImage(addAthleteRequestResource.getImage());
 		athlete.setDateOfBirth(validateSevice.convertStringToDate(addAthleteRequestResource.getDateOfBirth()));
 		athlete.setStatus(Status.ACTIVE.toString());
 		athlete.setCreatedUser(addAthleteRequestResource.getCreatedUser());
@@ -125,9 +124,13 @@ public class AthleteServiceImpl implements AthleteService  {
 		List<Athlete>listOfAthletes= athleteRepository.findAll();
 		if(!listOfAthletes.isEmpty()) {
 			for(Athlete athleteObj:listOfAthletes) {
-			List<EventParticipation>listOfEventParticipation=eventParticipationRepository.findByAthleteId(athleteObj.getId());
+				int age=calculateAge(athleteObj.getDateOfBirth());
+				athleteObj.setAge(age);
+			List<EventParticipation>listOfEventParticipation=eventParticipationRepository.findByAthleteId(athleteObj);
 			if(!listOfEventParticipation.isEmpty()) {
+				
 				athleteObj.setEventParticipationDetails(listOfEventParticipation);
+				
 				}
 			}
 		}else {
@@ -142,6 +145,11 @@ public class AthleteServiceImpl implements AthleteService  {
 		
 	}
 	
+	private int calculateAge(Date dob) {
+		Date curDate = new Date();
+		int age=curDate.compareTo(curDate);
+		return age; 
+	}
 	private void getUploadedDirectory(String dirName, ResourceHandlerRegistry registry) {
         Path uploadDir = Paths.get(dirName);
         String uploadPath = uploadDir.toFile().getAbsolutePath();
@@ -162,5 +170,14 @@ public class AthleteServiceImpl implements AthleteService  {
 		Boolean val=storeProfileImage(updatedAthlete,imgFile,fileName);
 		
 		return val;
+	}
+
+	@Override
+	public List<Athlete> searchAthlete(String searchq, String name, String event, String country, String gender) {
+		ArrayList<Athlete> athlete=new ArrayList<>();
+		
+		
+		return athlete;
+		
 	}
 }

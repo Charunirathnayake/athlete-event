@@ -8,9 +8,6 @@ public class EventParticipationResource {
 	
 	@NotBlank(message="Event Name is required.")
 	private String eventName;
-	
-	@NotBlank(message="Created user is required.")
-	private String createdUser;
 
 	public String getEventId() {
 		return eventId;
@@ -26,14 +23,6 @@ public class EventParticipationResource {
 
 	public void setEventName(String eventName) {
 		this.eventName = eventName;
-	}
-
-	public String getCreatedUser() {
-		return createdUser;
-	}
-
-	public void setCreatedUser(String createdUser) {
-		this.createdUser = createdUser;
 	}
 	
 	

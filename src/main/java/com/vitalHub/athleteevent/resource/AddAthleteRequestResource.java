@@ -18,16 +18,24 @@ public class AddAthleteRequestResource {
 	@NotBlank(message="Country is required.")
 	private String country;
 	
+	private String image;
+
 	@NotBlank(message="Date of birth is required.")
 	private String dateOfBirth;
-	
-	@NotBlank(message="image is required.")
-	private String image;
 	
 	@NotBlank(message="Created user is required.")
 	private String createdUser;
 	
 	List<EventParticipationResource> eventParticipationList;
+
+	
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
 
 	public String getFirstName() {
 		return firstName;
@@ -67,14 +75,6 @@ public class AddAthleteRequestResource {
 
 	public void setDateOfBirth(String dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
-	}
-
-	public String getImage() {
-		return image;
-	}
-
-	public void setImage(String image) {
-		this.image = image;
 	}
 
 	public String getCreatedUser() {
