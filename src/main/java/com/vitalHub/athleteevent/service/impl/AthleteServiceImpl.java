@@ -146,8 +146,10 @@ public class AthleteServiceImpl implements AthleteService  {
 	}
 	
 	private int calculateAge(Date dob) {
+		int birthYear=dob.getYear();	
 		Date curDate = new Date();
-		int age=curDate.compareTo(curDate);
+		int currentYear=curDate.getYear();
+		int age=currentYear-birthYear;
 		return age; 
 	}
 	private void getUploadedDirectory(String dirName, ResourceHandlerRegistry registry) {
@@ -174,9 +176,18 @@ public class AthleteServiceImpl implements AthleteService  {
 
 	@Override
 	public List<Athlete> searchAthlete(String searchq, String name, String event, String country, String gender) {
-		ArrayList<Athlete> athlete=new ArrayList<>();
 		
-		
+		List<Athlete> athlete=athleteRepository.searchPerson(searchq,name,event,country,gender);
+		if(!athlete.isEmpty()) {
+			for(Athlete athleteObj:athlete) {
+				int age=calculateAge(athleteObj.getDateOfBirth());
+				athleteObj.setAge(age);
+				List<EventParticipation>listOfEventParticipation=eventParticipationRepository.findByAthleteId(athleteObj);
+				if(!listOfEventParticipation.isEmpty()) {			
+					athleteObj.setEventParticipationDetails(listOfEventParticipation);			
+					}	
+			}
+		}
 		return athlete;
 		
 	}
